@@ -15,5 +15,5 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-       run: git push -f https://yasminesherbeny:$HF_TOKEN@huggingface.co/spaces/yasminesherbeny/forecast-api main
+        run: git push -f https://yasminesherbeny:$HF_TOKEN@huggingface.co/spaces/yasminesherbeny/forecast-api main
 
