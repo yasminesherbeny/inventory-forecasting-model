@@ -1,0 +1,14 @@
+venv
+inventory_env
+.git
+__pycache__
+*.pyc
+.pytest_cache
+.vscode
+.idea
+*.egg-info
+.DS_Store
+Thumbs.db
+*.log
+data/*.csv
+models/*.pkl
