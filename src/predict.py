@@ -28,16 +28,21 @@ def load_models(model_dir: str = 'models') -> None:
     if _CLASSIFIER is not None:
         return  # Already loaded
 
-    classifier_path = os.path.join(model_dir, 'occurrence_classifier.pkl')
-    regressors_path = os.path.join(model_dir, 'segmented_regressors.pkl')
-    encoders_path   = os.path.join(model_dir, 'encoders.pkl')
+    # Calculate absolute path relative to where this predict.py file lives
+    current_dir = os.path.dirname(os.path.abspath(__file__))  # points to src/
+    root_dir = os.path.dirname(current_dir)                    # points to the project root
+    absolute_model_dir = os.path.join(root_dir, model_dir)     # points to project root/models/
+
+    classifier_path = os.path.join(absolute_model_dir, 'occurrence_classifier.pkl')
+    regressors_path = os.path.join(absolute_model_dir, 'segmented_regressors.pkl')
+    encoders_path   = os.path.join(absolute_model_dir, 'encoders.pkl')
 
     if not os.path.exists(classifier_path):
-        raise FileNotFoundError(f"Classifier not found at {classifier_path}")
+        raise FileNotFoundError(f"Classifier not found at absolute path: {classifier_path}")
     if not os.path.exists(regressors_path):
-        raise FileNotFoundError(f"Regressors not found at {regressors_path}")
+        raise FileNotFoundError(f"Regressors not found at absolute path: {regressors_path}")
     if not os.path.exists(encoders_path):
-        raise FileNotFoundError(f"Encoders not found at {encoders_path}")
+        raise FileNotFoundError(f"Encoders not found at absolute path: {encoders_path}")
 
     _CLASSIFIER = joblib.load(classifier_path)
     _REGRESSORS = joblib.load(regressors_path)
@@ -48,8 +53,9 @@ def load_models(model_dir: str = 'models') -> None:
     _LOW_MAX  = 15.0   # median of positive demand
     _HIGH_MIN = 60.0   # 85th percentile of positive demand
 
-    print(f"✅ Models loaded from {model_dir}")
+    print(f"✅ Models loaded from absolute path: {absolute_model_dir}")
     print(f"   Thresholds: LOW_MAX={_LOW_MAX}, HIGH_MIN={_HIGH_MIN}")
+
 
 
 def get_segment_by_lag1(lag1_value: float) -> str:
